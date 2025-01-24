@@ -28,7 +28,7 @@ jobs:
           aws-region: eu-west-3
 
       - name: Initialize Terraform
-        run: terraform init
+        run: terraform init -backend-config="backend.dev.hcl"
 
       - name: Plan Terraform
         env:

@@ -5,3 +5,4 @@ variable "rds_instance_username" {
 variable "rds_instance_password" {
   type = string
 }
+

@@ -23,6 +23,5 @@ locals {
 
   cloudwatch_group_name = "/ecs/impactes-mobile-dev"
 
-  // must be provided
-  route53_hosted_zone_id = "Z0209441842EPXNUCQZM"
+  route53_hosted_zone_id = data.aws_route53_zone.impactes-mobile_zone.zone_id
 }

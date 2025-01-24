@@ -1,6 +1,16 @@
 Route53 and SES must be preconfigured before running terraform
 
-Also profile must be created in the IAM service.
+Also profile must be created in the IAM service and used locally : 
+
+CLI: AWS_PROFILE=impactes-mobile-terraform-user terraform init
+CLI: AWS_PROFILE=impactes-mobile-terraform-user terraform plan
+CLI: AWS_PROFILE=impactes-mobile-terraform-user terraform apply
+
+or simply : 
+export AWS_PROFILE=impactes-mobile-terraform-user
+terraform init
+terraform plan
+terraform apply
 
 
 SSL certificate must also be created in the Certificate Manager in us-east-1 region (must be in this region even if our project is in eu-west-1)
@@ -9,3 +19,8 @@ and copy its arn in the modules/cloudfront/locals.impactes-mobile_fr_ssl_ca_arn
 
 
 Some secrets must also be created in the Secrets Manager in AWS, there secrets are referenced in the file: modules/ecs/ecs.tf
+Secret arn must retrieved from AWS Console and used in the: modules/ecs/ecs.tf
+
+
+The terraform.tfvars is the file where we put sensitive variable values that will not be pushed to github but essential for 
+terraform 

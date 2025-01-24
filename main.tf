@@ -3,11 +3,7 @@ terraform {
 
 
   backend "s3" {
-    bucket         = "impactes-mobile-state-33493fig3gil-dev"
-    key            = "tf-infra/terraform.tfstate"
-    region         = "eu-west-3"
-    dynamodb_table = "impactes-mobile-state-33493fig3gil-dev"
-    encrypt        = true
+    // parameters are in backend.dev/prod.hcl files
   }
 
   required_providers {
