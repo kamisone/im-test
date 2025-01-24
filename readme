@@ -24,3 +24,8 @@ Secret arn must retrieved from AWS Console and used in the: modules/ecs/ecs.tf
 
 The terraform.tfvars is the file where we put sensitive variable values that will not be pushed to github but essential for 
 terraform 
+
+
+in the state (state/dev & state/prod): 
+
+AWS_PROFILE=impactes-mobile-terraform-user terraform init/plan/apply

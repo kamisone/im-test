@@ -1,6 +1,7 @@
 
 
 resource "aws_cloudfront_distribution" "cloudfront_distribution" {
+  
   origin {
     domain_name = var.load_balancer_dns_name
     origin_id = var.load_balancer_name
