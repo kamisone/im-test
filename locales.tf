@@ -25,5 +25,4 @@ locals {
 
   // must be provided
   route53_hosted_zone_id = "Z0209441842EPXNUCQZM"
-  profile = "impactes-mobile-terraform-user"
 }
