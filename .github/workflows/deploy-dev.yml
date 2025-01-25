@@ -34,10 +34,12 @@ jobs:
         env:
           TF_VAR_rds_instance_username: ${{ secrets.RDS_INSTANCE_USERNAME }}
           TF_VAR_rds_instance_password: ${{ secrets.RDS_INSTANCE_PASSWORD }}
+          TF_VAR_environment: dev
         run: terraform plan
 
       - name: Apply Terraform
         env:
           TF_VAR_rds_instance_username: ${{ secrets.RDS_INSTANCE_USERNAME }}
           TF_VAR_rds_instance_password: ${{ secrets.RDS_INSTANCE_PASSWORD }}
+          TF_VAR_environment: dev
         run: terraform apply -auto-approve

@@ -112,6 +112,8 @@ module "s3Bucket" {
 module "cloudfront" {
   source = "./modules/cloudfront"
 
+  environment = local.environment
+
   load_balancer_dns_name = module.ecsCluster.load_balancer_dns_name
   load_balancer_name  = module.ecsCluster.load_balancer_name
 
@@ -119,6 +121,8 @@ module "cloudfront" {
 
 module "route53" {
   source = "./modules/route53"
+
+  environment = local.environment
 
   hosted_zone_id = local.route53_hosted_zone_id
   cloudfront_domain_name = module.cloudfront.cloudfront_domain_name
