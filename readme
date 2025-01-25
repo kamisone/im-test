@@ -1,31 +1,30 @@
-Route53 and SES must be preconfigured before running terraform
+# Services to preconfigure
 
-Also profile must be created in the IAM service and used locally : 
+    - Route53
+    - SES
+    - Profile (IAM Service) in your local machine: impactes-mobile-terraform-user
+        if you want to make changes directly to aws infra without passing by github process (not recommended), you use CLI CMDs
+            CLI: AWS_PROFILE=impactes-mobile-terraform-user terraform init
+            CLI: AWS_PROFILE=impactes-mobile-terraform-user terraform plan
+            CLI: AWS_PROFILE=impactes-mobile-terraform-user terraform apply
+            Or simply : export AWS_PROFILE=impactes-mobile-terraform-user
+            terraform init
+            terraform plan
+            terraform apply
+    - SSL Certificate must also be created in the Certificate Manager in us-east-1 region (must be in this region even if our project is in eu-west-1) and copy its arn in the modules/cloudfront/locals.impactes-mobile_fr_ssl_ca_arn
+    - Some secrets must also be created in the Secrets Manager in AWS, there secrets are referenced in the file: modules/ecs/ecs.tf
+    Secret arn must retrieved from AWS Console and used in the: modules/ecs/ecs.tf
 
-CLI: AWS_PROFILE=impactes-mobile-terraform-user terraform init
-CLI: AWS_PROFILE=impactes-mobile-terraform-user terraform plan
-CLI: AWS_PROFILE=impactes-mobile-terraform-user terraform apply
+The terraform.tfvars is the file where we put sensitive variable values that will not be pushed to github but essential for
+terraform locally if you decide to make changes directly to aws without passing by github CI/CD process (forbidden)
 
-or simply : 
-export AWS_PROFILE=impactes-mobile-terraform-user
-terraform init
-terraform plan
-terraform apply
+# Setup
 
+    1- If you want to make some changes to state (not recommended), you can do it in (state/dev & state/prod): AWS_PROFILE=impactes-mobile-terraform-user terraform init/plan/apply
 
-SSL certificate must also be created in the Certificate Manager in us-east-1 region (must be in this region even if our project is in eu-west-1)
-and copy its arn in the modules/cloudfront/locals.impactes-mobile_fr_ssl_ca_arn
+    3- You push feature branch to repo, when approved, you can merge it to "dev", if all is ok, you make PR to merge to "prod"
+
+    2- You can directly update terraform by using CLI commands and your aws profile (not recommended)
 
 
 
-Some secrets must also be created in the Secrets Manager in AWS, there secrets are referenced in the file: modules/ecs/ecs.tf
-Secret arn must retrieved from AWS Console and used in the: modules/ecs/ecs.tf
-
-
-The terraform.tfvars is the file where we put sensitive variable values that will not be pushed to github but essential for 
-terraform 
-
-
-in the state (state/dev & state/prod): 
-
-AWS_PROFILE=impactes-mobile-terraform-user terraform init/plan/apply
