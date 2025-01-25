@@ -10,6 +10,8 @@ locals {
 
 
   ecr_repo_name = "impactes-mobile-ecr-repo-${var.environment}"
+  ecs_secrets_manager_policy_name = "ecs-secrets-manager-policy-${var.environment}"
+  ecr_access_policy_name = "ecr-access-policy-${var.environment}"
 
   cluster_name = "impactes-mobile-cluster-${var.environment}"
 

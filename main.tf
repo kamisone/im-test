@@ -64,6 +64,9 @@ module "ecsCluster" {
 
   db_address = module.rdsPostgres.db_address
 
+  ecs_secrets_manager_policy_name = local.ecs_secrets_manager_policy_name
+  ecr_access_policy_name = local.ecr_access_policy_name
+
 
 
   cloudwatch_group_name = local.cloudwatch_group_name

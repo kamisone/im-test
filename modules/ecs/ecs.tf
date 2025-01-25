@@ -99,7 +99,7 @@ resource "aws_iam_role" "ecs_task_execution_role" {
 }
 
 resource "aws_iam_policy" "ecs_secrets_manager_policy" {
-  name = "ecs-secrets-manager-policy"
+  name = var.ecs_secrets_manager_policy_name
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -117,7 +117,7 @@ resource "aws_iam_policy" "ecs_secrets_manager_policy" {
 }
 
 resource "aws_iam_policy" "ecr_access_policy" {
-  name = "ecr-access-policy"
+  name = var.ecr_access_policy_name
 
   policy = jsonencode({
     Version = "2012-10-17"

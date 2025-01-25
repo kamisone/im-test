@@ -110,4 +110,11 @@ variable "secret_manager_arn" {
   type = string
 }
 
+variable "ecs_secrets_manager_policy_name" {
+  type = string
+}
+variable "ecr_access_policy_name" {
+  type = string
+}
+
 
