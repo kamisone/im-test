@@ -1,3 +1,11 @@
+variable "environment" {
+  type = string
+  validation {
+    condition = contains(["dev", "prod"], var.environment)
+    error_message = "The environment must be either 'dev' or 'prod'."
+  }
+}
+
 variable "cluster_name" {
   description = "ECS cluster name"
   type        = string
@@ -56,6 +64,13 @@ variable "cloudwatch_group_name" {
   type        = string
 }
 
+variable "cloudwatch_task_access_iam_role_policy_name" {
+  description = "The name of the IAM policy that grants ECS tasks access to CloudWatch"
+  type        = string
+}
+
+
+
 variable "aws_vpc_id" {
   type        = string
   description = "AWS vpc id"
@@ -88,4 +103,10 @@ variable "igw_id" {
   description = "The internet gateway id"
   type = string
 }
+
+variable "secret_manager_arn" {
+  description = "The ARN of the secret used to retrieve sensitive environment variables for ECS tasks."
+  type = string
+}
+
 

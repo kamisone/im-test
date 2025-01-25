@@ -4,8 +4,8 @@ resource "aws_s3_bucket" "assets_bucket" {
 
   
   tags = {
-    Environment = "Developement"
-    Application = "impactes-mobile-dev"
+    Environment = var.assets_bucket_environment_tag
+    Application = "impactes-mobile"
   }
 
 }
@@ -54,7 +54,7 @@ resource "aws_s3_bucket_policy" "assets_bucket_policy" {
 }
 
 resource "aws_iam_user" "assets_bucket_iam_user" {
-  name = "impactes-mobile-assets-bucket-iam-user-dev"
+  name = var.assets_bucket_iam_user_name
 }
 
 resource "aws_iam_access_key" "assets_bucket_iam_access_key" {
@@ -63,7 +63,7 @@ resource "aws_iam_access_key" "assets_bucket_iam_access_key" {
 
 
 resource "aws_iam_user_policy" "assets_bucket_iam_user_policy" {
-  name = "impactes-mobile-assets-bucket-iam-user-policy-dev"
+  name = var.assets_bucket_iam_user_policy_name
   user = aws_iam_user.assets_bucket_iam_user.name
 
   policy = jsonencode({

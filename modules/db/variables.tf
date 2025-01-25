@@ -14,3 +14,16 @@ variable "instance_username" {
 variable "instance_password" {
   type = string
 }
+
+variable "instance_identifier" {
+  type = string
+}
+
+variable "rds_subnet_name" {
+  type = string
+}
+
+variable "custom_rds_parameter_group_name" {
+  type = string
+  
+}

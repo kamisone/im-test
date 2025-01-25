@@ -41,44 +41,44 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
         "secrets" = [
           {
             name      = "API_TOKEN_SALT",
-            valueFrom = "arn:aws:secretsmanager:eu-west-3:794038237190:secret:impactes-mobile-dev-r510fn:API_TOKEN_SALT::"
+            valueFrom = "${var.secret_manager_arn}:API_TOKEN_SALT::"
           },
           {
             name      = "ADMIN_JWT_SECRET",
-            valueFrom = "arn:aws:secretsmanager:eu-west-3:794038237190:secret:impactes-mobile-dev-r510fn:ADMIN_JWT_SECRET::"
+            valueFrom = "${var.secret_manager_arn}:ADMIN_JWT_SECRET::"
           },
           {
             name      = "TRANSFER_TOKEN_SALT",
-            valueFrom = "arn:aws:secretsmanager:eu-west-3:794038237190:secret:impactes-mobile-dev-r510fn:TRANSFER_TOKEN_SALT::"
+            valueFrom = "${var.secret_manager_arn}:TRANSFER_TOKEN_SALT::"
           },
           {
             name      = "JWT_SECRET",
-            valueFrom = "arn:aws:secretsmanager:eu-west-3:794038237190:secret:impactes-mobile-dev-r510fn:JWT_SECRET::"
+            valueFrom = "${var.secret_manager_arn}:JWT_SECRET::"
           },
           {
             name      = "DATABASE_USERNAME",
-            valueFrom = "arn:aws:secretsmanager:eu-west-3:794038237190:secret:impactes-mobile-dev-r510fn:DATABASE_USERNAME::"
+            valueFrom = "${var.secret_manager_arn}:DATABASE_USERNAME::"
           },
           {
             name      = "DATABASE_PASSWORD",
-            valueFrom = "arn:aws:secretsmanager:eu-west-3:794038237190:secret:impactes-mobile-dev-r510fn:DATABASE_PASSWORD::"
+            valueFrom = "${var.secret_manager_arn}:DATABASE_PASSWORD::"
           },
           {
             name      = "SMTP_USERNAME",
-            valueFrom = "arn:aws:secretsmanager:eu-west-3:794038237190:secret:impactes-mobile-dev-r510fn:SMTP_USERNAME::"
+            valueFrom = "${var.secret_manager_arn}:SMTP_USERNAME::"
           },
           {
             name      = "SMTP_PASSWORD",
-            valueFrom = "arn:aws:secretsmanager:eu-west-3:794038237190:secret:impactes-mobile-dev-r510fn:SMTP_PASSWORD::"
+            valueFrom = "${var.secret_manager_arn}:SMTP_PASSWORD::"
           },
 
           {
             name      = "AWS_ACCESS_KEY_ID",
-            valueFrom = "arn:aws:secretsmanager:eu-west-3:794038237190:secret:impactes-mobile-dev-r510fn:AWS_ACCESS_KEY_ID::"
+            valueFrom = "${var.secret_manager_arn}:AWS_ACCESS_KEY_ID::"
           },
           {
             name      = "AWS_SECRET_ACCESS_KEY",
-            valueFrom = "arn:aws:secretsmanager:eu-west-3:794038237190:secret:impactes-mobile-dev-r510fn:AWS_SECRET_ACCESS_KEY::"
+            valueFrom = "${var.secret_manager_arn}:AWS_SECRET_ACCESS_KEY::"
           }
         ]
       }
@@ -110,7 +110,7 @@ resource "aws_iam_policy" "ecs_secrets_manager_policy" {
           "secretsmanager:DescribeSecret"
         ],
         Effect   = "Allow"
-        Resource = "arn:aws:secretsmanager:eu-west-3:794038237190:secret:impactes-mobile-dev-r510fn"
+        Resource = var.secret_manager_arn
       }
     ]
   })
@@ -137,7 +137,7 @@ resource "aws_iam_policy" "ecr_access_policy" {
 
 }
 resource "aws_iam_role_policy" "cloudwatch_task_access_iam_role_policy" {
-  name = "cloudwatch-task-access-dev"
+  name = var.cloudwatch_task_access_iam_role_policy_name
   role = aws_iam_role.ecs_task_execution_role.name
 
   policy = jsonencode({
@@ -160,7 +160,7 @@ resource "aws_iam_role_policy" "cloudwatch_task_access_iam_role_policy" {
 
 
 resource "aws_secretsmanager_secret_policy" "secret_policy" {
-  secret_arn = "arn:aws:secretsmanager:eu-west-3:794038237190:secret:impactes-mobile-dev-r510fn"
+  secret_arn = var.secret_manager_arn
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
@@ -173,7 +173,7 @@ resource "aws_secretsmanager_secret_policy" "secret_policy" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:DescribeSecret"
         ],
-        Resource = "arn:aws:secretsmanager:eu-west-3:794038237190:secret:impactes-mobile-dev-r510fn"
+        Resource = var.secret_manager_arn
       }
     ]
   })
@@ -266,8 +266,7 @@ resource "aws_cloudwatch_log_group" "ecs_log-group" {
 
 # Local data
 data "local_file" "env_file" {
-  filename = "${path.module}/dev.env"
-
+  filename = "${path.module}/${var.environment}.env"
 }
 
 

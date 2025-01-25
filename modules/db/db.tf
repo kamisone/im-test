@@ -6,7 +6,7 @@ resource "aws_db_instance" "postgres_instance" {
   engine                 = "postgres"
   engine_version         = "16.3"
   instance_class         = "db.t3.micro"
-  identifier             = "impactes-mobile-dev"
+  identifier             = var.instance_identifier
   db_name                = "impactes"
   username               = var.instance_username
   password               = var.instance_password
@@ -19,12 +19,12 @@ resource "aws_db_instance" "postgres_instance" {
 
 
 resource "aws_db_subnet_group" "rds_subnet" {
-  name       = "impactes-mobile-dev"
+  name       = var.rds_subnet_name
   subnet_ids = var.subnet_ids
 }
 
 resource "aws_db_parameter_group" "custom_rds_parameter_group" {
-  name        = "impactes-mobile-custom-rds-parameter-group-dev"
+  name        = var.custom_rds_parameter_group_name
   family      = "postgres16"
   description = "Custom parameter group without rds.force_ssl"
 

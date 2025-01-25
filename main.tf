@@ -3,7 +3,7 @@ terraform {
 
 
   backend "s3" {
-    // parameters are in backend.dev/prod.hcl files
+    // parameters are in backend.(dev/prod).hcl files
   }
 
   required_providers {
@@ -34,11 +34,18 @@ module "rdsPostgres" {
   instance_username = var.rds_instance_username
   instance_password = var.rds_instance_password
 
+  instance_identifier = local.rds_instance_identifier
+
+  rds_subnet_name = local.rds_subnet_name
+
+  custom_rds_parameter_group_name = local.custom_rds_parameter_group_name
+
 }
 
 module "ecsCluster" {
   source = "./modules/ecs"
 
+  environment = local.environment
 
   cluster_name = local.cluster_name
 
@@ -47,16 +54,20 @@ module "ecsCluster" {
   task_name                   = local.task_name
   ecs_task_exection_role_name = local.ecs_task_exection_role_name
 
+  secret_manager_arn = local.secret_manager_arn
+
 
   application_load_balancer_name = local.application_load_balancer_name
   target_group_name              = local.target_group_name
   ecs_service_name               = local.ecs_service_name
+  
 
   db_address = module.rdsPostgres.db_address
 
 
 
   cloudwatch_group_name = local.cloudwatch_group_name
+  cloudwatch_task_access_iam_role_policy_name = local.cloudwatch_task_access_iam_role_policy_name
   aws_vpc_id            = module.networking.aws_vpc_id
   subnet_ids            = module.networking.subnet_ids
   ecr_repo_url          = module.ecrRepo.repository_url
@@ -70,6 +81,16 @@ module "ecsCluster" {
 module "networking" {
   source = "./modules/networking"
 
+  vpc_tag_name = local.vpc_tag_name
+
+  load_balancer_security_group_name = local.load_balancer_security_group_name
+
+  ecs_security_group_name = local.ecs_security_group_name
+
+  rds_security_group_name = local.rds_security_group_name
+
+  igw_tag_name = local.igw_tag_name
+
 }
 
 
@@ -80,6 +101,11 @@ module "s3Bucket" {
   source             = "./modules/s3"
   assets_bucket_name = local.assets_bucket_name
 
+  assets_bucket_environment_tag = local.assets_bucket_environment_tag
+
+  assets_bucket_iam_user_name = local.assets_bucket_iam_user_name
+
+  assets_bucket_iam_user_policy_name = local.assets_bucket_iam_user_policy_name
 }
 
 
@@ -97,6 +123,4 @@ module "route53" {
   hosted_zone_id = local.route53_hosted_zone_id
   cloudfront_domain_name = module.cloudfront.cloudfront_domain_name
   cloudfront_hosted_zone_id = module.cloudfront.cloudfront_hosted_zone_id
-
-
 }

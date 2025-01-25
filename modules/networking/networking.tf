@@ -4,14 +4,14 @@ resource "aws_vpc" "app_vpc" {
   enable_dns_hostnames = true
 
   tags = {
-    Name = "impactes-mobile-dev"
+    Name = var.vpc_tag_name
   }
 }
 
 
 
 resource "aws_security_group" "load_balancer_security_group" {
-  name        = "impactes-mobile-lb-security-group-dev"
+  name        = var.load_balancer_security_group_name
   vpc_id      = aws_vpc.app_vpc.id
   description = "load balancer security group"
   ingress = [
@@ -55,7 +55,7 @@ resource "aws_security_group" "load_balancer_security_group" {
 }
 
 resource "aws_security_group" "ecs_security_group" {
-  name        = "impactes-mobile-ecs-security-group-dev"
+  name        = var.ecs_security_group_name
   vpc_id      = aws_vpc.app_vpc.id
   description = "ecs service security group"
   ingress = [
@@ -90,7 +90,7 @@ resource "aws_security_group" "ecs_security_group" {
 
 
 resource "aws_security_group" "rds_security_group" {
-  name        = "impactes-mobile-rds-security-group-dev"
+  name        = var.rds_security_group_name
   description = "Allow access to PostgresSQL from ECS tasks"
   vpc_id      = aws_vpc.app_vpc.id
 
@@ -146,7 +146,7 @@ resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.app_vpc.id
 
   tags = {
-    Name = "impactes-mobile-dev"
+    Name = var.igw_tag_name
   }
 }
 
