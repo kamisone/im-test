@@ -1,6 +1,9 @@
 
 
 resource "aws_cloudfront_distribution" "cloudfront_distribution" {
+  tags = {
+    Name = "impactes-mobile-${var.environment}-distribution"
+  }
   
   origin {
     domain_name = var.load_balancer_dns_name
@@ -15,7 +18,7 @@ resource "aws_cloudfront_distribution" "cloudfront_distribution" {
   }
 
   enabled = true
-  comment = "CloudFront distribution for impactes ALB dev"
+  comment = "CloudFront distribution for impactes ALB ${var.environment}"
 
   default_cache_behavior {
     target_origin_id = var.load_balancer_name
